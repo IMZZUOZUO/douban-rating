@@ -1,0 +1,19 @@
+*{
+	margin: 0;
+	padding:0;
+}
+ul,ol,li{
+	list-style:none;
+}
+.rating{
+	width: 160px;
+	height: 32px;
+	margin:100px auto 0;
+}
+.rating-show{
+	height: 32px;
+	width: 32px;
+	float: left;
+	cursor:pointer;
+	background:url(../img/iVPGGC.png) no-repeat;
+}
