@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/index.css" />
+	</head>
+	<body>
+		<ul class="rating" id="rating">
+			<li class="rating-star" title="非常不推举"></li>
+			<li class="rating-star" title="不推荐"></li>
+			<li class="rating-star" title="一般"></li>
+			<li class="rating-star" title="推举"></li>
+			<li class="rating-star" title="非常推举"></li>
+		</ul>
+		<ul class="rating" id="rating2">
+			<li class="rating-star" title="非常不推举"></li>
+			<li class="rating-star" title="不推荐"></li>
+			<li class="rating-star" title="一般"></li>
+			<li class="rating-star" title="推举"></li>
+			<li class="rating-star" title="非常推举"></li>
+		</ul>
+	</body>
+	<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>
+	<script>
+		var rating=(function(){
+			var banke=function(id,options){
+				this.oRating=$(id)
+				this.oStar=this.oRating.find(".rating-star")
+				this.ops=options
+				this.nbr=1//星星技术器
+			}
+			banke.prototype.show=function(num){
+				var integer=parseInt(num)
+				this.oStar.each(function(index){
+					if(index<integer){
+						$(this).css("background-position","0 -40px")
+					}else{
+						$(this).css("background-position","0 0")
+					}
+				})
+				if(integer!=num){
+					this.oStar.eq(integer).css("background-position","0 -80px")
+				}
+			}
+			banke.prototype.bindEvent=function(){
+				var self=this
+				self.oRating.on("mousemove",".rating-star",function(e){//使用mousemove在元素中移动时触发事件
+					var num=0
+					var e=e||window.event
+					if(e.pageX-$(this).offset().left<$(this).width()/2){
+						//鼠标离屏幕的宽度（e.pageX）减去选中元素离屏幕的宽度（.offset().left）与元素的半宽作比较
+						self.nbr=0.5
+					}else{
+						self.nbr=1
+					}
+					num=$(this).index()+self.nbr
+					self.show(num)
+				}).on("click",".rating-star",function(){
+					self.ops.num=$(this).index()+self.nbr
+					//选取元素的下标加上常数nbr
+				}).on("mouseout",function(){
+					self.show(self.ops.num)
+				})
+			}
+			banke.prototype.init=function(){
+				this.show(this.ops.num)
+				if(!this.ops.readOnly){
+					this.bindEvent()
+				}
+			}
+			var delf={
+				num:3,
+				readOnly:false,
+				select:function(){},
+				chonse:function(){}
+			}
+			var init=function(id,options){
+				options=$.extend({},delf, options);
+				new banke(id,options).init()
+			}
+			return{
+				init:init
+			}
+		})()
+		rating.init("#rating",{
+			num:3.5
+		})
+		rating.init("#rating2",{
+			num:3
+		})
+	</script>
+</html>
