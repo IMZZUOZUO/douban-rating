@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/index.css" />
+	</head>
+	<body>
+		<ul class="rating" id="rating">
+			<li class="rating-star" title="非常不推举"></li>
+			<li class="rating-star" title="不推荐"></li>
+			<li class="rating-star" title="一般"></li>
+			<li class="rating-star" title="推举"></li>
+			<li class="rating-star" title="非常推举"></li>
+		</ul>
+	</body>
+	<script type="text/javascript" src="js/jquery-1.8.3.js" ></script>、
+	<script>
+		var rating=(function(){
+			var zhengke=function(id,options){
+				this.oRating=$(id)
+				this.oStar=this.oRating.find(".rating-star")
+				this.ops=options
+				//把数据绑定在zhengke这个函数的原型上
+			}//这个函数便是点亮事件的函数
+			//给zhengke这个函数绑定方法
+				//点亮方法
+			zhengke.prototype.theshow=function(num){
+				this.oStar.each(function(index){
+					if(index<num){
+						$(this).css("background-position","0 -40px")
+					}else{
+						$(this).css("background-position","0 0")
+					}
+				})
+			}
+				//绑定事件方法
+			zhengke.prototype.bindEvent=function(){
+				var self=this//存储一般this指针
+				//此处将指针储存一次应为下面on()中的this指向的并不是zhengke这个函数
+				self.oRating.on("mouseover",".rating-star",function(){//事件委托写法这样避免每一个li都要绑定一次事件
+					self.theshow($(this).index()+1)
+				}).on("click",".rating-star",function(){
+					self.ops.num=$(this).index()+1
+				}).on("mouseout",function(){
+					self.theshow(self.ops.num)
+				})
+			}
+			zhengke.prototype.init=function(){
+				this.theshow(this.ops.num)
+				if(!this.ops.readOnly){
+					this.bindEvent()
+				}
+			}
+			//初始化数据
+			var defl={
+				num:3,
+				readOnly:false,
+				select:function(){},
+				chonse:function(){}
+			}
+			var init=function(id,options){//初始化函数
+				options=$.extend({},defl,options)//用options类中的数据合并前default的数据并将合并的数据放入{}中
+				new zhengke(id,options).init()
+			}
+			return {
+				init:init
+			}
+		})()
+			rating.init("#rating",{
+				num:4,
+				readOnkly:false,
+				select:function(){},
+				chonse:function(){}
+			})
+			
+	</script>
+</html>
