@@ -114,7 +114,7 @@
 				"banke":banke,
 				"zhengke":zhengke
 			}
-			var init=function(id,options){
+			var init=function(id,options){//与外界连接函数
 				options=$.extend({},delf,options)
 				if (!esc[options.model]) {//如果输入错误则默认为整颗模式
 					new zhengke(id,options).init()
